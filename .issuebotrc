@@ -1,0 +1,28 @@
+role do
+    name "Triager"
+    default
+    users [
+        "markspolakovs",
+    ]
+end
+
+trigger "close" do |trigger|
+    action do
+        comment "Closed by #{trigger.comment.user.login}"
+        close
+    end
+end
+
+trigger "reopen" do
+    action do
+        comment "Okay, reopening this issue."
+        reopen
+    end
+end
+
+trigger "duplicate (#[0-9]+)" do |match, trigger|
+    action do
+        comment "Duplicate of #{match[1]}, according to #{trigger.comment.user.username}"
+        close
+    end
+end
